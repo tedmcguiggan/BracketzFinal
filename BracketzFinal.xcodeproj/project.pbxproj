@@ -11,7 +11,6 @@
 		BC09A7C32672527600AD4BE0 /* JoinTournyVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC09A7C22672527600AD4BE0 /* JoinTournyVC.swift */; };
 		BC3966AF264DB0F00079137E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BC3966AE264DB0F00079137E /* GoogleService-Info.plist */; };
 		BC3966F1264DDECB0079137E /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3966F0264DDECB0079137E /* User.swift */; };
-		BC3966F4264DDEFF0079137E /* Match.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3966F3264DDEFF0079137E /* Match.swift */; };
 		BC3966F7264DDF070079137E /* Tournament.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3966F6264DDF070079137E /* Tournament.swift */; };
 		BC4CE9EB264EC70700298C29 /* UserSelectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4CE9EA264EC70700298C29 /* UserSelectionVC.swift */; };
 		BC4CE9F1264ED21B00298C29 /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4CE9F0264ED21B00298C29 /* PlayerView.swift */; };
@@ -45,7 +44,6 @@
 		BC09A7C22672527600AD4BE0 /* JoinTournyVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinTournyVC.swift; sourceTree = "<group>"; };
 		BC3966AE264DB0F00079137E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		BC3966F0264DDECB0079137E /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		BC3966F3264DDEFF0079137E /* Match.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Match.swift; sourceTree = "<group>"; };
 		BC3966F6264DDF070079137E /* Tournament.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tournament.swift; sourceTree = "<group>"; };
 		BC4CE9EA264EC70700298C29 /* UserSelectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSelectionVC.swift; sourceTree = "<group>"; };
 		BC4CE9F0264ED21B00298C29 /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
@@ -180,7 +178,6 @@
 			isa = PBXGroup;
 			children = (
 				BC3966F0264DDECB0079137E /* User.swift */,
-				BC3966F3264DDEFF0079137E /* Match.swift */,
 				BC3966F6264DDF070079137E /* Tournament.swift */,
 			);
 			path = Model;
@@ -327,7 +324,6 @@
 				BCA22DC2263DB55800D460EB /* InputContainerView.swift in Sources */,
 				BC09A7BF26724C5100AD4BE0 /* TabBarController.swift in Sources */,
 				BC4CE9EB264EC70700298C29 /* UserSelectionVC.swift in Sources */,
-				BC3966F4264DDEFF0079137E /* Match.swift in Sources */,
 				BCA22DB8263DB33B00D460EB /* LoginController.swift in Sources */,
 				BCD79B67265BED8600656C10 /* MatchPlayVC.swift in Sources */,
 				BC4CE9F1264ED21B00298C29 /* PlayerView.swift in Sources */,

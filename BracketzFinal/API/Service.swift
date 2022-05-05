@@ -190,4 +190,34 @@ struct Service {
                 view.navigationController?.pushViewController(controller, animated: true)
             }
     }
+    
+    func handleMatchLoss(matchID: String, tourny: Tournament, currentUser: String, view: UIViewController) {
+        REF_TOURNAMENTS.child(tourny.tournamentID).child("matches").child(matchID).removeValue()
+        
+        REF_TOURNAMENTS.child(tourny.tournamentID).child("tournamentUsers").runTransactionBlock { (currentData: MutableData) -> TransactionResult in
+            var value = currentData.value as? [String]
+            
+            if value == nil {
+                value = []
+            }
+            
+            if let index = value?.firstIndex(of: currentUser) {
+                value?.remove(at: index)
+            }
+            currentData.value = value
+            return TransactionResult.success(withValue: currentData)
+        }
+        
+        
+        REF_USERS.child(currentUser).child("unresolvedTournaments").observeSingleEvent(of: .value) { (snapshot) in
+            guard var invites = snapshot.value as? [String] else { return }
+            if let index = invites.firstIndex(of: tourny.tournamentID) {
+                invites.remove(at: index)
+            }
+            REF_USERS.child(currentUser).updateChildValues(["unresolvedTournaments": invites])
+        }
+
+        let controller = LoserVC()
+        view.navigationController?.pushViewController(controller, animated: true)
+    }
 }

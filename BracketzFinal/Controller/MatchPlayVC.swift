@@ -5,6 +5,11 @@
 //  Created by Edward McGuiggan on 5/24/21.
 //
 
+
+
+
+// This class needs a viewModel to handle all the business logic. Complete mess
+
 import UIKit
 import Firebase
 
@@ -196,7 +201,11 @@ class MatchPlayVC: UIViewController {
         timerLabel.text = String(timerCount)
         timerCount -= 1
      
+        matchplayCountdown()
         
+    }
+    
+    func matchplayCountdown() {
         if timerCount <= 2 {
             timerLabel.textColor = .red
         }
@@ -229,63 +238,48 @@ class MatchPlayVC: UIViewController {
         if timerCount == -7 {
             timer.invalidate()
             checkWinLogic()
+            updateTournament()
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                if self.didWin {
-                        self.observeTournament()
-                } else if self.didLose {
-                    
-                    REF_TOURNAMENTS.child(self.tourny!.tournamentID).child("matches").child(self.matchID!).removeValue()
-                    
-                    REF_TOURNAMENTS.child(self.tourny!.tournamentID).child("tournamentUsers").runTransactionBlock { (currentData: MutableData) -> TransactionResult in
-                        var value = currentData.value as? [String]
-                        
-                        if value == nil {
-                            value = []
-                        }
-                        
-                        if let index = value?.firstIndex(of: self.currentUser!) {
-                            value?.remove(at: index)
-                        }
-                        currentData.value = value
-                        return TransactionResult.success(withValue: currentData)
-                    }
-                    
-                    
-                    REF_USERS.child(self.currentUser!).child("unresolvedTournaments").observeSingleEvent(of: .value) { (snapshot) in
-                        guard var invites = snapshot.value as? [String] else { return }
-                        if let index = invites.firstIndex(of: self.tourny!.tournamentID) {
-                            invites.remove(at: index)
-                        }
-                        REF_USERS.child(self.currentUser!).updateChildValues(["unresolvedTournaments": invites])
-                    }
+        }
+    }
     
-                    let controller = LoserVC()
-                    self.navigationController?.pushViewController(controller, animated: true)
-                } else if self.didTie {
-                    self.didTie = false
-                    self.timerCount = 10
-                    self.timerLabel.text = "10"
-                    self.timerLabel.textColor = .green
-                    self.myMove.text = ""
-                    self.opponentMove.text = ""
-                    self.rockButton.isEnabled = true
-                    self.paperButton.isEnabled = true
-                    self.scissorsButton.isEnabled = true
-                    self.rockButton.setTitleColor(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), for: .normal)
-                    self.paperButton.setTitleColor(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), for: .normal)
-                    self.scissorsButton.setTitleColor(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), for: .normal)
-                    self.rockButton.backgroundColor = .white
-                    self.paperButton.backgroundColor = .white
-                    self.scissorsButton.backgroundColor = .white
-                    self.timerLabel.isHidden = false
-                    self.startMatch()
+    
+    func updateTournament() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            if self.didWin {
+                    self.observeTournamentState()
+            } else if self.didLose {
+                if let matchID = self.matchID, let tourny = self.tourny, let currentUser = self.currentUser {
+                    Service.shared.handleMatchLoss(matchID: matchID, tourny: tourny, currentUser: currentUser, view: self)
                 }
+                
+            } else if self.didTie {
+                self.resetMatch()
             }
         }
     }
     
-    func observeTournament() {
+    func resetMatch() {
+        self.didTie = false
+        self.timerCount = 10
+        self.timerLabel.text = "10"
+        self.timerLabel.textColor = .green
+        self.myMove.text = ""
+        self.opponentMove.text = ""
+        self.rockButton.isEnabled = true
+        self.paperButton.isEnabled = true
+        self.scissorsButton.isEnabled = true
+        self.rockButton.setTitleColor(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), for: .normal)
+        self.paperButton.setTitleColor(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), for: .normal)
+        self.scissorsButton.setTitleColor(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), for: .normal)
+        self.rockButton.backgroundColor = .white
+        self.paperButton.backgroundColor = .white
+        self.scissorsButton.backgroundColor = .white
+        self.timerLabel.isHidden = false
+        self.startMatch()
+    }
+    
+    func observeTournamentState() {
         let newTournySize = tournySize/2
         
         if newTournySize == 1 {
@@ -329,6 +323,8 @@ class MatchPlayVC: UIViewController {
         }
     }
     
+    
+    //use enums to clean this up
     
     func checkWinLogic() {
         if myMoveText == "rock" {
